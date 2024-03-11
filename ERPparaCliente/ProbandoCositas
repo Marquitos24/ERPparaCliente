@@ -1,0 +1,330 @@
+import tkinter as tk
+import random
+import PIL as pl
+from tkinter import PhotoImage, StringVar, messagebox
+class Logo:
+    def __init__(self, ventana):
+        self.contenedor = tk.Frame(ventana, bg="#275170", width=2000, height=1100)
+        self.contenedor.pack(side="top", expand=False, fill="none")  # Evitar que el Frame se ajuste automáticamente al contenido
+        
+
+        # Agregar la imagen al contenedor
+        self.imagen = PhotoImage(file="LogoParquejdy.png")  # Reemplaza con la ruta de tu imagen
+ 
+        self.label_imagen = tk.Label(self.contenedor, image=self.imagen)
+        self.label_imagen.place(relx=0.5, rely=0.5, anchor="center")  # Colocar la imagen en el centro
+        self.label_imagen.pack(padx=600, pady=10)
+
+class Carrito:
+    def __init__(self):
+        self.contador = 0
+        self.productos_selecionados = []
+        self.cliente_nombre = None
+        self.producto_fecha = None
+        self.cliente_apellidos = None
+        self.cliente_telefono = None
+        self.cliente_codigop = None
+        self.producto_categoria = None
+        self.producto_tamaño = None
+        self.producto_precio = None
+        self.producto_formaPago = None
+        self.letras = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'
+
+
+    def aumentar_contador(self):
+        # Aumentar el contador y actualizar la etiqueta
+        self.contador += 1
+        
+    def meter_productos(self, producto):
+         self.productos_selecionados.append(producto)
+
+    def mostrar_carrito(self):
+        messagebox.showinfo("CARRITO", f"Productos añadidos al carrito: {','.join(self.productos_selecionados)}")
+
+    def volver_a_inicio2(self, carrito):
+            # Seleccionar la primera página al hacer clic en "Inicio"
+            carrito.destroy()
+
+    def mensajee(self, variable):
+        if any(len(var.get()) == 0 for var in variable):
+            messagebox.showinfo("COMPRA", "Debes añadir los datos")
+        else :
+            messagebox.showinfo("COMPRA", "Tu compra fue realizada")
+
+    def add_data_to_entry(self, entry, data):
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, data)
+
+# Función para limpiar todas las entradas de texto
+    
+
+    def abrir_paginaC(self, titulo):
+        carrito = tk.Tk()
+        carrito.title(titulo)
+        carrito.geometry("2000x1000")
+
+        canvas = tk.Canvas(carrito)
+        canvas.pack(side="left", fill="both", expand=True)
+
+        scrollbar = tk.Scrollbar(carrito, orient="vertical", command=canvas.yview)
+        scrollbar.pack(side="right", fill="y")
+
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+        label_contenido = tk.Label(carrito, text=f"Numero de preoductos: {self.contador}", font=('Bauhaus 93', 16))
+        label_contenido.pack(pady=20, padx=50)
+
+        contenido_frame = tk.Frame(canvas)
+        canvas.create_window((0, 0), window=contenido_frame, anchor="nw")
+
+        producos_l = tk.Label(carrito, text="Productos en el carrito:", font=('Roboto Mono', 12))
+        producos_l.pack(pady=10)
+
+        for producto in self.productos_selecionados:
+            producto_label = tk.Label(carrito, text=producto, font=('Roboto Mono', 10))
+            producto_label.pack()
+
+        menubar = tk.Menu(carrito)
+        carrito.config(menu=menubar)
+
+        # Menú de Inicio
+        inicio_menu = tk.Menu(menubar, tearoff=0)
+        inicio_menu.add_command(label='PÁGINA DE INICIO', command=lambda: self.volver_a_inicio2(carrito))
+        menubar.add_cascade(label='INICIO', menu=inicio_menu)
+
+        variable = [ StringVar(), StringVar(), StringVar(),
+            StringVar(), StringVar(), StringVar(),
+            StringVar(), StringVar(), StringVar()]
+       
+
+        #Aqui deben ir las letras aleatorias
+        idCliente_label = tk.Label(carrito, text="ID Cliente: " + self.letrasAleatorios())
+        idCliente_label.pack(pady=10)
+
+        clienteN_label = tk.Label(carrito, text="Nombre:")
+        clienteN_label.pack(pady=10)
+        cliente_nombre = tk.Entry(carrito, textvariable=variable[0])
+        cliente_nombre.pack(pady=3)
+
+        clienteA_label = tk.Label(carrito, text="Apellidos:")
+        clienteA_label.pack(pady=10)
+        cliente_apellidos = tk.Entry(carrito, textvariable=variable[1])
+        cliente_apellidos.pack(pady=3)
+
+        clienteT_label = tk.Label(carrito, text="Telefono:")
+        clienteT_label.pack(pady=10)
+        cliente_telefono = tk.Entry(carrito, textvariable=variable[2])
+        cliente_telefono.pack(pady=3)
+
+        clienteCP_label = tk.Label(carrito, text="Codigo P.:")
+        clienteCP_label.pack(pady=10)
+        cliente_codigop = tk.Entry(carrito, textvariable=variable[3])
+        cliente_codigop.pack(pady=3)
+
+        # Generar 5 números aleatorios entre 1 y 100
+        numeros_aleatorios = [random.randint(1, 10) for _ in range(5)]
+    
+        codigoProduct_label = tk.Label(carrito, text=numeros_aleatorios)
+        codigoProduct_label.pack(pady=10)
+        
+
+        # Entradas de texto para ingresar los datos del producto
+        productoC_label = tk.Label(carrito, text="CATEGORIA:")
+        productoC_label.pack(pady=10)
+        producto_categoria = tk.Entry(carrito, textvariable=variable[4])
+        producto_categoria.pack(pady=3)
+
+        productoT_label = tk.Label(carrito, text="TAMAÑO:")
+        productoT_label.pack(pady=10)
+        producto_tamaño = tk.Entry(carrito, textvariable=variable[5])
+        producto_tamaño.pack(pady=3)
+
+        productoP_label = tk.Label(carrito, text="PRECIO:")
+        productoP_label.pack(pady=10)
+        producto_precio = tk.Entry(carrito, textvariable=variable[6])
+        producto_precio.pack(pady=3)
+
+        productoFP_label = tk.Label(carrito, text="FORMA DE PAGO:")
+        productoFP_label.pack(pady=10)
+        producto_formaPago = tk.Entry(carrito, textvariable=variable[7])
+        producto_formaPago.pack(pady=3)
+        
+        productoF_label = tk.Label(carrito, text="FECHA:")
+        productoF_label.pack(pady=10)
+        producto_fecha = tk.Entry(carrito, textvariable=variable[8])
+        producto_fecha.pack(pady=3)
+
+         #boton COMPRAR 
+        boton_comprar = tk.Button(carrito, text="COMPRAR", command=lambda: self.mensajee(variable))
+        boton_comprar.pack(pady=10)
+
+        # Botones para limpiar las entradas de texto
+        boton_borrar = tk.Button(carrito, text="Borrar", command=lambda: self.clear_entries(variable))
+        boton_borrar.pack(pady=10)
+
+        canvas.configure(scrollregion=canvas.bbox("all")) 
+
+        carrito.mainloop()
+
+    def clear_entries(self, variable):
+        for var in variable:
+            var.set('')  # Limpia la variable asociada al Entry
+
+    def letrasAleatorios(self):
+        return ''.join(random.choice(self.letras) for _ in range(5))
+
+class Productos:
+    def __init__(self, carrito):
+        self.carrito = carrito
+        self.imagen1T = PhotoImage(file="elec1_855_44.png")
+        self.imagen2T = PhotoImage(file="elec2_699_99.png")
+        self.imagen1C = PhotoImage(file="casa1_536.png")
+        self.imagen2C = PhotoImage(file="casa2_207.png")
+        self.imagen1A = PhotoImage(file="comida1_21.png")
+        self.imagen2A = PhotoImage(file="comida2_2.png")
+
+    def on_button_click(self, producto):
+        self.carrito.aumentar_contador()
+        self.carrito.meter_productos(producto)
+
+    def volver_a_inicio(self, productos):
+            # Seleccionar la primera página al hacer clic en "Inicio"
+            productos.destroy()
+
+    def abrir_paginaP(self, titulo):
+        productos = tk.Toplevel()
+        productos.geometry("2000x1000")
+        productos.title(titulo)
+
+        menubar = tk.Menu(productos)
+        productos.config(menu=menubar)
+
+        # Menú de Inicio
+        inicio_menu = tk.Menu(menubar, tearoff=0)
+        inicio_menu.add_command(label='PÁGINA DE INICIO', command=lambda: self.volver_a_inicio(productos))
+        menubar.add_cascade(label='INICIO', menu=inicio_menu)
+
+
+        comprar_menu = tk.Menu(menubar, tearoff=0)
+        comprar_menu.add_command(label='CARRITO', command=lambda: carrito.abrir_paginaC('CARRITO'))
+        menubar.add_cascade(label='COMPRAR', menu=comprar_menu)
+
+        """
+        footer_color = "#1F4A6A"
+        footer_frame = tk.Frame(productos, bg=footer_color)
+        footer_frame.pack(side="top", expand=False, fill="none")
+
+            # Añade una imagen al footer
+        logo_imagen = PhotoImage(file="LogoParquejdy.png") 
+
+        logo_label = tk.Label(footer_frame, image=logo_imagen, bg=footer_color)
+        logo_label.place(relx=0.5, rely=0.5, anchor="center")
+        logo_label.pack(pady=10)
+        """
+        label_contenido = tk.Label(productos, text="Comprar online", font=('Roboto Mono', 20))
+        label_contenido.pack(pady=20, padx=30)#pady = vertical \ padx = horizontal
+    #TECNOLOGIA================================================================================
+        elec = tk.Label(productos, text="Tecnología:", font=('Roboto Mono', 16))
+        elec.pack(pady=20, padx=30)
+
+        tecnologia_frame = tk.Frame(productos)
+        tecnologia_frame.pack(pady=20, padx=30)
+    #ELEMENTO 1
+    # Crear un botón con la imagen
+        boton_con_imagen = tk.Button(tecnologia_frame, image=self.imagen1T, command= lambda: self.on_button_click("MacBook Pro Touch Bar 15"))
+        boton_con_imagen.grid(row=0, column=0, padx=20, pady=10)
+    #ELEMENTO 2
+        boton_con_imagen = tk.Button(tecnologia_frame, image=self.imagen2T, command= lambda: self.on_button_click("Portátil HP 15S-Fq5060ns - 15.6 Pulgadas"))
+        boton_con_imagen.grid(row=0, column=1, padx=40, pady=10)
+
+    #CASA,JARDIN Y MUEBLES ===========================================================================
+        casa = tk.Label(productos, text="Casa-Jardín-Muebles:", font=('Roboto Mono', 16))
+        casa.pack(pady=20, padx=30)
+       
+        casa_frame = tk.Frame(productos)
+        casa_frame.pack(pady=20)
+    #ELEMENTO 1
+
+        boton_con_imagen = tk.Button(casa_frame, image=self.imagen1C, command= lambda: self.on_button_click("Conjunto De Muebles De Ratán 135 X 72.5 X 62cm Color Gris"))
+        boton_con_imagen.grid(row=0, column=0, padx=20, pady=10)
+    #ELEMENTO 2
+        boton_con_imagen = tk.Button(casa_frame, image=self.imagen2C, command= lambda: self.on_button_click("Mueble De Entrada De 2 Puertas Con Espejo"))
+        boton_con_imagen.grid(row=0, column=1, padx=40, pady=10)
+    #ALIMENTOS ==============================================================================================
+        comida = tk.Label(productos, text="Alimentos:", font=('Roboto Mono', 16))
+        comida.pack(pady=20, padx=30)
+        
+        comida_frame = tk.Frame(productos)
+        comida_frame.pack(pady=20)
+    #ELEMENTO 1
+        boton_con_imagen = tk.Button(comida_frame, image=self.imagen1A, command= lambda: self.on_button_click("Longlife Vegetal Absoluto 500G"))
+        boton_con_imagen.grid(row=0, column=0, padx=20, pady=10)
+    #ELEMENTO 2
+        boton_con_imagen = tk.Button(comida_frame, image=self.imagen2A, command= lambda: self.on_button_click("Arroz Fusilli Integrado R&Ampr 250G"))
+        boton_con_imagen.grid(row=0, column=1, padx=40, pady=10)
+
+        productos.mainloop()
+
+
+ventana = tk.Tk()
+ventana.title('SUPERMERCADO PARQUEJODY')
+
+label_inicio = tk.Label(ventana, text='BIENVENIDO A PARQUEJODY', font=('Bauhaus 93', 30))
+label_inicio.pack(pady=40, padx=50)
+
+# Menú
+menubar = tk.Menu(ventana)
+ventana.config(menu=menubar)
+
+carrito = Carrito()
+productos = Productos(carrito)
+# Menú de Comprar
+comprar_menu = tk.Menu(menubar, tearoff=0)
+comprar_menu.add_command(label='PRODUCTOS', command=lambda: productos.abrir_paginaP('PRODUCTOS'))
+comprar_menu.add_separator()
+comprar_menu.add_command(label='CARRITO', command=lambda: carrito.abrir_paginaC('CARRITO'))
+menubar.add_cascade(label='COMPRAR', menu=comprar_menu)
+
+salir_menu = tk.Menu(menubar, tearoff=0)
+salir_menu.add_command(label='SALIR', command=ventana.destroy)
+menubar.add_cascade(label='SALIR', menu=salir_menu)
+
+app = Logo(ventana)
+
+frame_izquierdo = tk.Frame(ventana, bd=1, relief="sunken")
+frame_izquierdo.pack(side="left", fill="y", pady=90, padx=40)
+
+# Agregar la imagen al frame izquierdo
+imagen_izquierda = PhotoImage(file="image1.png")
+label_imagen_izquierda = tk.Label(frame_izquierdo, image=imagen_izquierda)
+label_imagen_izquierda.pack(pady=10)
+
+# Crear el frame derecho para el texto
+frame_derecho = tk.Frame(ventana, bd=1, relief="sunken")
+frame_derecho.pack(side="right", fill="both", expand=True, pady=90)
+
+# Agregar el texto al frame derecho
+texto = "¡Bienvenido a PARQUEJODY, tu destino de compras excepcional!" + "\nEn PARQUEJODY, nos emociona darte la bienvenida a una experiencia de compras única. " + "\nEn PARQUEJODY, nos esforzamos para ser parte de tu vida diaria." + "\nEstamos aquí para hacer que cada visita sea memorable." + "\n¡Gracias por elegir PARQUEJODY!"
+label_texto = tk.Label(frame_derecho, text=texto, font=("Century Gothic", 12), fg="black")
+label_texto.pack(pady=40, padx=50) 
+
+
+"""frame2_izquierdo = tk.Frame(ventana, bd=1, relief="sunken")
+frame2_izquierdo.pack(side="left", fill="y", pady=90, padx=40)
+
+# Crear el frame derecho para el texto
+frame2_derecho = tk.Frame(ventana, bd=1, relief="sunken")
+frame2_derecho.pack(side="right", fill="both", expand=True, pady=90)
+
+# Agregar la imagen al frame izquierdo
+imagen2_izquierda = PhotoImage(file="imagen2.png")
+label2_imagen_izquierda = tk.Label(frame2_derecho, image=imagen2_izquierda)
+label2_imagen_izquierda.pack(pady=30)
+
+# Agregar el texto al frame derecho
+texto2 = " Estamos aquí para hacer que cada visita sea memorable."+"\n¡Gracias por elegir PARQUEJODY!"
+label2_texto = tk.Label(frame2_izquierdo, text=texto2, font=('Bauhaus 93', 16), fg="black")
+label2_texto.pack(pady=40, padx=50) 
+"""
+ventana.mainloop()

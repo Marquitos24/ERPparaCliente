@@ -1,0 +1,9 @@
+import sqlite3
+
+conexion = sqlite3.connect("bbddParquejody.db")
+cursor = conexion.cursor()
+
+cursor.execute("DROP TABLE Productos")
+print()
+
+conexion.close()

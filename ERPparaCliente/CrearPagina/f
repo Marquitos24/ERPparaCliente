@@ -1,0 +1,114 @@
+import tkinter as tk
+
+import PIL as pl
+from tkinter import PhotoImage
+
+
+class Logo:
+    def __init__(self, ventana):
+        self.contenedor = tk.Frame(ventana, bg="blue", width=2000, height=1100)
+        self.contenedor.pack(side="top", expand=False, fill="none")  # Evitar que el Frame se ajuste automáticamente al contenido
+       
+
+        # Agregar la imagen al contenedor
+        self.imagen = PhotoImage(file="LogoParquejdy.png")  # Reemplaza con la ruta de tu imagen
+ 
+        self.label_imagen = tk.Label(self.contenedor, image=self.imagen)
+        self.label_imagen.place(relx=0.5, rely=0.5, anchor="center")  # Colocar la imagen en el centro
+        self.label_imagen.pack(pady=20)
+
+
+def abrir_pagina(titulo, contenido):
+    nueva_página = tk.Tk()
+    
+    label_contenido = tk.Label(nueva_página, text=contenido, font=('Bauhaus 93', 16))
+    label_contenido.pack(pady=40, padx=50)
+
+    nueva_página.mainloop()
+
+def volver_a_inicio():
+    # Seleccionar la primera página al hacer clic en "Inicio"
+    notebook.select(0)
+
+def cc():
+    nventana = tk.Tk()
+
+    nventana.mainloop()
+ventana = tk.Tk()
+ventana.title('SUPERMERCADO PARQUEJODY')
+
+# notebook = tk.Tk(ventana)
+# notebook.pack(expand=True, fill='both')
+
+# Página de inicio
+# pagina_inicio = tk.Frame(notebook)
+# notebook.add(pagina_inicio, text='INICIO')
+
+# Contenido de la página de inicio
+label_inicio = tk.Label(ventana, text='Contenido de la página de inicio', font=('Bauhaus 93', 16))
+label_inicio.pack(pady=40, padx=50)
+
+# Menú
+menubar = tk.Menu(ventana)
+ventana.config(menu=menubar)
+
+# Menú de Comprar
+comprar_menu = tk.Menu(menubar, tearoff=0)
+comprar_menu.add_command(label='PRODUCTOS', command=lambda: abrir_pagina('PRODUCTOS', 'Contenido de la página de productos'))
+comprar_menu.add_command(label='CARRITO', command=lambda: abrir_pagina('CARRITO', 'Contenido de la página del carrito'))
+comprar_menu.add_separator()
+comprar_menu.add_command(label='SALIR', command=ventana.destroy)
+menubar.add_cascade(label='COMPRAR', menu=comprar_menu.add_separator())
+
+# Menú de Cuenta
+cuenta_menu = tk.Menu(menubar, tearoff=0)
+cuenta_menu.add_command(label='INICIAR SESIÓN', command=lambda: abrir_pagina('INICIAR SESIÓN', 'Contenido de la página de inicio de sesión'))
+cuenta_menu.add_command(label='REGISTRARSE', command=lambda: abrir_pagina('REGISTRARSE', 'Contenido de la página de registro'))
+menubar.add_cascade(label='CUENTA', menu=cuenta_menu.add_separator())
+
+# Menú de Inicio
+inicio_menu = tk.Menu(menubar, tearoff=0)
+inicio_menu.add_command(label='PÁGINA DE INICIO', command=volver_a_inicio)
+menubar.add_cascade(label='INICIO', menu=inicio_menu.add_separator())
+app = Logo(ventana)
+
+
+
+
+
+frame_izquierdo = tk.Frame(ventana, bd=1, relief="sunken")
+frame_izquierdo.pack(side="left", fill="y", pady=90, padx=40)
+
+# Agregar la imagen al frame izquierdo
+imagen_izquierda = PhotoImage(file="image1.png")
+label_imagen_izquierda = tk.Label(frame_izquierdo, image=imagen_izquierda)
+label_imagen_izquierda.pack(pady=10)
+
+# Crear el frame derecho para el texto
+frame_derecho = tk.Frame(ventana, bd=1, relief="sunken")
+frame_derecho.pack(side="right", fill="both", expand=True, pady=90)
+
+# Agregar el texto al frame derecho
+texto = "¡Bienvenido a PARQUEJODY, tu destino de compras excepcional!" + "En PARQUEJODY, nos emociona darte la bienvenida a una experiencia de compras única. "
+label_texto = tk.Label(frame_derecho, text=texto, font=("Century Gothic", 12), fg="black")
+label_texto.pack(pady=40, padx=50) 
+
+
+"""frame2_izquierdo = tk.Frame(ventana, bd=1, relief="sunken")
+frame2_izquierdo.pack(side="left", fill="y", pady=90, padx=40)
+
+# Crear el frame derecho para el texto
+frame2_derecho = tk.Frame(ventana, bd=1, relief="sunken")
+frame2_derecho.pack(side="right", fill="both", expand=True, pady=90)
+
+# Agregar la imagen al frame izquierdo
+imagen2_izquierda = PhotoImage(file="imagen2.png")
+label2_imagen_izquierda = tk.Label(frame2_derecho, image=imagen2_izquierda)
+label2_imagen_izquierda.pack(pady=30)
+
+# Agregar el texto al frame derecho
+texto2 = "En PARQUEJODY, nos esforzamos para ser parte de tu vida diaria. Estamos aquí para hacer que cada visita sea memorable."+"\n¡Gracias por elegir PARQUEJODY!"
+label2_texto = tk.Label(frame2_izquierdo, text=texto2, font=('Bauhaus 93', 16), fg="black")
+label2_texto.pack(pady=40, padx=50) 
+"""
+ventana.mainloop()
